@@ -1,0 +1,49 @@
+{% extends 'Admin_s/base.html' %}
+{% load widget_tweaks %}
+{% block title %}{{title}}{% endblock %}
+{% block 'content' %}
+<div class="d-flex flex-column" id="content-wrapper">
+  <div id="content">
+    {% include 'Admin_s/navbar.html' %}
+    <div class="container-fluid">
+      <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0"></h3>
+        <!-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> -->
+      </div>
+      <div class="container mt-4">
+        <h2>
+         {{heading}}
+        </h2>
+        <form method="post" action="">
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="control-label">{{ field.label_tag }}</label>
+            {% if field.field.widget.input_type == "select" %}
+            <select class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}">
+              {% for value, label in field.field.choices %}
+              <option value="{{ value }}" {% if value == field.value %}selected{% endif %}> {{ label }} </option>
+              {% endfor %}
+            </select>
+            {% else %}
+            <!-- <input type="{{ field.field.widget.input_type }}" class="form-control {% if field.errors %}is-invalid{% endif %}" name="{{ field.name }}" id="{{ field.auto_id }}" {% if field.value %}value="{{ field.value }}" {% endif %}> -->
+            {{ field|attr:"class:form-control  {% if field.errors %}is-invalid{% endif %}" }}
+            {% endif %}
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+            {% if field.errors %}
+            <div class="invalid-feedback">
+              {% for error in field.errors %}
+              {{ error }}
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock 'content' %}

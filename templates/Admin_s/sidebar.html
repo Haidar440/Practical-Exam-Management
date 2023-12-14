@@ -1,0 +1,76 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+  <div class="container-fluid d-flex flex-column p-0">
+    {% if request.user.is_staff %}
+    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+      <div class="sidebar-brand-icon rotate-n-">
+        <i class="fa-solid fa-building-columns"></i>
+      </div>  
+      <div class="sidebar-brand-text mx-3"><span>Admin</span></div>
+    </a>
+    <hr class="sidebar-divider my-0" />
+    <ul class="navbar-nav text-light" id="accordionSidebar">
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'home' %}"><i
+            class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'student'%}"><i class="fas fa-user"></i><span>Student</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'examiner' %}"><i class="fas fa-user"></i><span>Examiner</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'subject' %}"><i
+            class="fa-solid fa-book-open-reader"></i></i><span>Subject</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'exam' %}"><i
+            class="fa-regular fa-calendar-check"></i></i><span>Schedule Exam</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'allocation' %}"><i class="fa-solid fa-sitemap"></i><span>Allocation</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'remove' %}"><i class="fa-solid fa-person-circle-xmark" style="color: #ffffff;"></i><span>Release Examiner</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'marksheet' %}"><i class="fa-solid fa-square-poll-vertical" style="color: #ffffff;"></i><span>Mark sheet</span></a>
+      </li>
+      <!-- {% else %}
+      <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+        <div class="sidebar-brand-icon rotate-n-">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>  
+        <div class="sidebar-brand-text mx-3"><span>Examiner</span></div>
+      </a>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'studentRecord' %}"><i
+            class="fa-regular fa-calendar-check"></i></i><span>Allocation Student</span></a>
+      </li> -->
+      {% endif %}
+      
+      <!-- <li class="nav-item">
+      <a class="nav-link" href="/profile.html"
+        ><i class="fas fa-user"></i><span>Profile</span></a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/table.html"
+        ><i class="fas fa-table"></i><span>Table</span></a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/login.html"
+        ><i class="far fa-user-circle"></i><span>Login</span></a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/register.html"
+        ><i class="fas fa-user-circle"></i><span>Register</span></a
+      >
+    </li> -->
+    </ul>
+    <button class="btn rounded-circle border-0" id="sidebarToggle" type="button" style="margin-bottom: 26px"></button>
+    <div class="text-center d-none d-md-inline"></div>
+  </div>
+</nav>

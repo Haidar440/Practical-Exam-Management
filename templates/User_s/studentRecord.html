@@ -1,0 +1,108 @@
+{% extends 'User_s/base.html' %} {% block 'content' %}
+<div class="d-flex flex-column" id="content-wrapper">
+  <div id="content">
+    {% include 'User_s/navbar.html' %}
+    <div class="container-fluid">
+      <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">Student Record</h3>
+        <button
+        href="#"
+        class="btn btn-sm  delete-button"
+        data-toggle="modal"
+        data-target="#deleteModal"
+      >
+      <i class="fa-solid fa-user-lock fa-2xl" style="color: #4a6fdc;"></i>
+      </button>
+      </div>
+      <!-- <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">ff</h3>
+        
+      </div> -->
+      <div class="container-fluid">
+        <h3 class="text-dark mb-4"></h3>
+        <div class="card shadow">
+          <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">Student Record</p>
+          </div>
+              <!-- Start: DataTable - Fully BSS Editable -->
+                        <div class="card shadow">
+                          <div class="card-body">
+                            <div class="table-responsive table mb-0 pt-3 pr-2">
+                              <form method="post" action="" class="form-group">
+                              {% csrf_token %}
+                              <table class="" id="table_record">
+                                <thead>
+                                  <tr>
+                                    <th>Enroll_no</th>
+                                    <th>Name</th>
+                                    <th>Practical Marks</th>
+                                    <th>ViVa Marks</th>
+                                  </tr>
+                                </thead>
+                                {% for record, marksheet in marksheet_records %}
+                                  <tr class="text-center">
+                                    <td>{{record.student.enroll_no}}</td>
+                                    <td>{{record.student.name}}</td>
+                                    <td><input type="number" id="row-2-pratical" name="row-{{record.student.id}}" min="0"  value="{% if marksheet %}{{ marksheet.pratical_marks }}{% endif %}"></td>
+                                      <td><input type="number" id="row-2-viva" name="row-{{record.student.id}}-viva" min="0" value="{% if marksheet %}{{ marksheet.viva_marks }}{% endif %}"></td>
+                                    
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                               
+                              </table>
+                            
+                              <button type="submit"  name="submit_action"  value="studentRecord" class="btn btn-primary btn-block mt-3">Submit</button>
+
+                              <div class="modal fade" id="deleteModal">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Confirm Delete</h5>
+                                      <button
+                                        type="button"
+                                        class="close"
+                                        data-dismiss="modal"
+                                        aria-label="Close"
+                                      >
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p>
+                                        Are you sure you want to submit marksheet to Admin side?
+                                         after submitting you cannot update marks.
+                                      </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        No
+                                      </button>
+                                      <button type="submit" name="submit_action" value="final_studentRecord" class="btn btn-danger"
+                                        >Yes</button
+                                      > 
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                              <!-- {% for subject in subjects %} {% include 'Admin_s/delete_student.html' with item=subject %}
+                              {% endfor %} -->
+                              
+                           
+                            </div>
+                          </div>
+                        </div>
+                      
+              
+                    
+                <!-- End: DataTable - Fully BSS Editable -->
+              
+           
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock 'content' %}
+</div>

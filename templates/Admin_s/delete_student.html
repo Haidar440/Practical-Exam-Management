@@ -1,0 +1,52 @@
+<div class="modal fade" id="deleteModal{{ item.id }}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to delete "{{ item.enroll_no }}{{item.name}}{{item.subject}}{{item.user}}"?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          No
+        </button>
+        {% if "/student" in request.path %}
+        <a href="{% url 'delete_student' item.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% elif "/examiner" in request.path %}
+        <a href="{% url 'delete_Examiner' item.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% elif "/subject" in request.path %}
+        <a href="{% url 'delete_subject' item.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% elif "/exam" in request.path %}
+        <a href="{% url 'delete_exam' item.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% elif "/showAllocation" in request.path %}
+        <a href="{% url 'deleteAllocation' item.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% elif "/releaseData" in request.path %}
+        <a href="{% url 'removed' examiner_prikey=item.examiner.id user_prikey=item.user.id %}" class="btn btn-danger"
+          >Yes</a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

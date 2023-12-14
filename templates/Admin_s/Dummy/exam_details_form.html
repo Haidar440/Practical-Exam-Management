@@ -1,0 +1,17 @@
+<!-- exam_details_form.html -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.exam.label_tag }}
+    {{ form.exam }}
+    <button type="submit">Get Details</button>
+</form>
+
+{% if exam_details %}
+    <h2>Exam Details</h2>
+    <p><strong>Subject:</strong> {{ exam_details.subject }}</p>
+    <p><strong>Semester:</strong> {{ exam_details.semester }}</p>
+    <p><strong>Division:</strong> {{ exam_details.division }}</p>
+    <p><strong>Start Time:</strong> {{ exam_details.start_time }}</p>
+    <p><strong>End Time:</strong> {{ exam_details.end_time }}</p>
+    <p><strong>Date:</strong> {{ exam_details.date }}</p>
+{% endif %}

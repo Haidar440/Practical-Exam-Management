@@ -1,0 +1,208 @@
+{% extends "Admin_s/base.html" %}
+{% load widget_tweaks %}
+{% block title %}{{title}}{% endblock %}
+ 
+{% block 'content' %}
+<div class="d-flex flex-column" id="content-wrapper">
+    <div id="content">
+        {% include "Admin_s/navbar.html" %}
+        <div class="container-fluid">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+            <div class="d-sm-flex justify-content-between align-items-center mb-0">
+                <h3 class="text-dark mb-0"></h3>
+                <!-- <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a> -->
+            </div>
+            <div class="container">
+                <h2>{{ heading }}</h2>
+                <div class="">
+                    <h3 class="text-dark mb-2"></h3>
+                    <div class="card shadow">
+                        <div class="card-header py-2 bg-primary">
+                            <p class="text-primary m-0 font-weight-bold text-light text-center">Allocation Record</p>
+                        </div>
+                        <div class="card-body">
+                            
+                                    <!-- Start: DataTable - Fully BSS Editable -->
+                                    {% if exams %}
+                                        <div class="form-row mb-2">
+                                            <div class="col">                  
+                                                <input type="text" class="form-control" value="{{ exams.subject }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control" value="{{ exams.semester }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-2">
+                                            <div class="col">
+                                                <input type="text" class="form-control" value="{{ exams.division }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control" value="{{ exams.date }}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-2">
+                                            <div class="col">
+                                                <input type="text" class="form-control" value="{{ exams.start_time }}" disabled>
+                                            </div>
+                                            <div class="col">
+                                                <input type="text" class="form-control" value="{{ exams.end_time }}" disabled>
+                                            </div>
+                                        </div>                               
+                        </div>
+                        </div>
+                    </div>           
+             <hr>
+             
+             {% endif %}
+        <form method="post" action="">
+          {% csrf_token %}
+          <div class="card card-body shadow border border-secondary">
+          {% for field in form %}
+          {% if not forloop.counter|divisibleby:2 %}
+          <div class="form-row">
+          {% endif %}   
+          <div class="col">
+          <div class="form-group">         
+            <label for="{{ field.id_for_label }}" class="control-label">{{ field.label_tag }}</label>
+
+            {% if field.field.widget.input_type == "select" %}
+            
+            <select class="form-control {% if field.errors %} is-invalid {% endif %}" id="{{ field.id_for_label }}" name="{{ field.name }}">
+
+              {% for value, label in field.field.choices %}
+              
+              {% if label not in available_examiners %}
+              <option value="{{ value }}" {% if value == field.value %}selected{% endif %}> {{ label }} </option>
+            
+              {% endif %}
+              {% endfor %}
+            </select>
+            {% else %}
+            {{ field|attr:"class:form-control  {% if field.errors %}is-invalid{% endif %}" }}
+            {% endif %}
+            {% if field.help_text %}
+
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+
+            {% endif %}
+            {% if field.errors %}
+            <div class="invalid-feedback">
+
+              {% for error in field.errors %}
+              {{ error }}
+              {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+          </div>
+          </div>
+          {% if forloop.counter|divisibleby:2 %}
+        </div>
+             {% endif %}  
+
+          {% endfor %}
+         
+        </div>
+    {% if exams %}
+        <div class="table-responsive">    
+    <table class="table" id="checkboxTable">
+        <thead>
+            <tr>
+                <th colspan="2"><input type="checkbox" id="select-all-checkbox"> Select All</th>
+                <th colspan="7" style="text-align:center;">Select Student for Allocation</th>
+            </tr>
+        </thead>
+        <tbody id="checkboxBody">
+           
+            <td colspan="7" style="text-align:center"><b>Please enter a batch size</b></td>
+            <!-- {% for i in numbers %}
+                <tr class="{% cycle 'table-primary' '' %}">
+                    {% for student in students %}
+                        <td class="text-center">
+                            <input class="student-checkbox" type="checkbox" id="Check-{{student.id}}" value="{{student.id}}" name="checks" aria-label="...">
+                            {{student.enroll_no}}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %} -->
+        </tbody>    
+</table>
+</div>
+{% endif %}
+<button type="submit" class="btn btn-primary">Submit</button>
+ </form>
+</div>
+            </div>
+        </div>
+    </div> 
+    <script>
+        const students = JSON.parse('{{ students_json|safe }}');
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckbox = document.getElementById("select-all-checkbox");
+            const checkboxCountInput = document.getElementById("id_batch_size");
+            const checkboxTableBody = document.getElementById("checkboxBody");
+
+            selectAllCheckbox.addEventListener("click", function () {
+                const isChecked = selectAllCheckbox.checked;
+                const studentCheckboxes = checkboxTableBody.querySelectorAll(".student-checkbox");
+                studentCheckboxes.forEach(function (checkbox) {
+                    checkbox.checked = isChecked;
+            });
+          });
+
+        id_batch_size.addEventListener("input", function () {
+                const count = parseInt(id_batch_size.value);
+                console.log(count);
+                if (count >= 0) {
+                    checkboxTableBody.innerHTML = ""; // Clear existing checkboxes
+                    // for (let i = 0; i < count; i++) {
+                      
+                        let iterationCount_td_student_loop = 1; 
+                        let iterationCount_student_loop = 0;
+                        let row = document.createElement("tr");
+                        for (let student of students) {
+                            iterationCount_student_loop++;
+                            console.log(iterationCount_student_loop);
+                          if (iterationCount_td_student_loop == 8) {
+                            checkboxTableBody.appendChild(row);
+                            row = document.createElement("tr");
+                            if (iterationCount_student_loop % 2 === 0) {
+                            row.classList.add("table-primary");
+                            }
+                            iterationCount_td_student_loop = 1;
+                            }
+                            const cell = document.createElement("td");
+                            cell.classList.add("text-center");
+                            const checkbox = document.createElement("input");
+                            checkbox.type = "checkbox";
+                            checkbox.classList.add("student-checkbox");
+                            checkbox.id = "Check-" + student.id;
+                            checkbox.value = student.id;
+                            checkbox.name = "checks";
+                            checkbox.setAttribute("aria-label", "");
+                            cell.appendChild(checkbox);
+                            cell.appendChild(document.createTextNode(student.enroll_no));
+                            row.appendChild(cell);
+                            if (iterationCount_student_loop == count) {
+                                checkboxTableBody.appendChild(row);
+                                break;
+                            }
+                            iterationCount_td_student_loop++;
+                            
+                        }
+                        checkboxTableBody.appendChild(row);
+                    // }
+                }
+            });
+        });
+      </script>
+      
+{% endblock 'content' %}

@@ -1,0 +1,79 @@
+{% extends 'Admin_s/base.html' %} {% block 'content' %} <div class="d-flex flex-column" id="content-wrapper">
+    <div id="content"> {% include 'Admin_s/navbar.html' %} <div class="container-fluid">
+            <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-dark mb-0">Allocated Student for Exam</h3>
+                <div class="sm-flex justify-content-between align-items-center">
+                    <a class="btn btn-primary btn-sm d-none d-sm-inline-block rounded-pill" role="button" href="{% url 'add_exam' %}"><i
+                            class="fa-solid fa-plus" style="color: #ffffff"></i> &nbsp;Add Exam</a>
+                </div>
+            </div>
+            <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-dark mb-0"></h3>
+            </div>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4"></h3>
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 font-weight-bold">Allocation Record</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <!-- Start: DataTable - Fully BSS Editable -->
+                                <section class="mt-4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="card shadow">
+                                                    <div class="card-header py-2"></div>
+                                                    <div class="card-body">
+                                                        <div class="table-responsive table mb-0 pt-3 pr-2">
+                                                            <table
+                                                                class="table table-striped table-sm my-0 mydatatable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Exam Name</th>
+                                                                        <th>Student EnrollNo</th>
+                                                                        <th>Student Name</th>
+                                                                        <th>Examiner</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody> {% for allocation in allocations %} <tr>
+                                                                        <td>{{allocation.exam}}</td>
+                                                                        <td>{{allocation.student.enroll_no}}</td>
+                                                                        <td>{{allocation.student.name}}</td>
+                                                                        <td>{{allocation.examiner}}</td>
+                                                                        <td class="text-center">
+                                                                            <a href="{% url 'updateAllocation' allocation.id %}"
+                                                                                class="btn btn-sm btn-primary ">update</a>
+                                                                                <button
+                                                                                href="#"
+                                                                                class="btn btn-sm btn-danger delete-button"
+                                                                                data-toggle="modal"
+                                                                                data-target="#deleteModal{{ allocation.id }}"
+                                                                              >
+                                                                                Delete
+                                                                              </button>
+                                        
+                                                                        </td>
+                                                                    </tr> {% endfor %} </tbody>
+                                                            </table>
+                                                            {% for allocation in allocations %} {% include 'Admin_s/delete_student.html' with item=allocation %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- End: DataTable - Fully BSS Editable -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> {% endblock 'content' %}
+</div>
